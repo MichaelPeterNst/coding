@@ -1,0 +1,40 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    string nama;
+    int jawab;
+
+    cout << "Hai 👋\n";
+    cout << "Boleh tau nama kamu?\n> ";
+    getline(cin, nama);
+
+    cout << "\nHalo " << nama << " 😄\n";
+
+    if (nama == "Grand" || nama == "grand") {
+        cout << "\nAku mau jujur ya...\n";
+        cout << "Sebenarnya aku suka kamu, Grand 💙\n";
+        cout << "Kamu orang yang spesial buat aku.\n";
+        cout << "\nJawaban kamu:\n";
+        cout << "1. Iya\n";
+        cout << "2. Kita temenan dulu\n";
+        cout << "> ";
+        cin >> jawab;
+
+        if (jawab == 1) {
+            cout << "\nAku seneng banget 😭💙\n";
+            cout << "Makasih ya udah mau nerima perasaanku.\n";
+        } else if (jawab == 2) {
+            cout << "\nGapapa kok 🙂\n";
+            cout << "Yang penting kita tetap baik-baik aja.\n";
+        } else {
+            cout << "\nJawaban apapun aku hargai kok.\n";
+        }
+    } else {
+        cout << "\nOhh 😅\n";
+        cout << "Program ini cuma buat seseorang yang spesial.\n";
+    }
+
+    cout << "\nTerima kasih sudah membaca 🌸\n";
+    return 0;
+}
