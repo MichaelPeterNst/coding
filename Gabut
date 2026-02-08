@@ -1,0 +1,73 @@
+#include <iostream>
+#include <thread>   // buat sleep
+#include <chrono>   // buat waktu
+using namespace std;
+
+int main() {
+    string Nama;
+    int Kelas;
+    string Tempat;
+
+    cout << "Nama kamu siapa?" << endl;
+    cout << "Nama : ";
+    getline(cin, Nama);
+
+    cout << "Owh itu, salam kenal " << Nama << "!" << endl;
+
+    cout << "Btw kamu kelas berapa?" << endl;
+    cout << "Kelas : ";
+    cin >> Kelas;
+
+    cout << "Sama dong, aku juga kelas " << Kelas << "!" << endl;
+    cout << "Salam kenal, nama aku Michael P Nst" << endl;
+    cout << "Aku kelas 10-1" << endl;
+
+    cin.ignore(); // biar getline aman
+
+    cout << "Kamu tinggal dimana?" << endl;
+    cout << "Tempat tinggal : ";
+    getline(cin, Tempat);
+
+    cout << "Owh kamu tinggal di " << Tempat << "!" << endl;
+
+    // ===== ANIMASI LOADING =====
+    cout << "\nMenyiapkan kalkulator";
+    for (int i = 0; i < 5; i++) {
+        cout << ".";
+        cout.flush();
+        this_thread::sleep_for(chrono::milliseconds(500));
+    }
+    cout << endl;
+
+    // ===== KALKULATOR =====
+    int a, b;
+    char op;
+
+    cout << "\n=== KALKULATOR SEDERHANA ===" << endl;
+    cout << "Masukkan angka pertama: ";
+    cin >> a;
+
+    cout << "Masukkan operator (+ - * /): ";
+    cin >> op;
+
+    cout << "Masukkan angka kedua: ";
+    cin >> b;
+
+    if (op == '+') {
+        cout << "Hasil: " << a + b;
+    } else if (op == '-') {
+        cout << "Hasil: " << a - b;
+    } else if (op == '*') {
+        cout << "Hasil: " << a * b;
+    } else if (op == '/') {
+        if (b != 0) {
+            cout << "Hasil: " << a / b;
+        } else {
+            cout << "Tidak bisa dibagi nol!";
+        }
+    } else {
+        cout << "Operator tidak valid!";
+    }
+
+    return 0;
+}
