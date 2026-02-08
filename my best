@@ -1,0 +1,166 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/* ========= META ========= */
+const string CREATOR = "MichaelPeterNst";
+
+/* ========= LOGGER ========= */
+void log(const string& m){
+    ofstream f("reality.log", ios::app);
+    time_t t=time(nullptr);
+    f<<ctime(&t)<<" "<<m<<"\n";
+}
+
+/* ========= INPUT ========= */
+class Input{
+public:
+    static string line(const string& m){
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        string s; cout<<m; getline(cin,s); return s;
+    }
+    template<typename T>
+    static T get(const string& m){
+        T v; cout<<m; cin>>v;
+        if(cin.fail()) throw runtime_error("Input invalid");
+        return v;
+    }
+};
+
+/* ========= USER ========= */
+struct User{
+    string name,kelas;
+    void setup(){
+        name = Input::line("Nama: ");
+        kelas = Input::line("Kelas: ");
+        log("User set: "+name);
+    }
+};
+
+/* ========= AI MEMORY ========= */
+class MemoryAI{
+    map<string,string> db;
+public:
+    MemoryAI(){
+        ifstream f("brain.db");
+        string k,v;
+        while(getline(f,k)&&getline(f,v)) db[k]=v;
+    }
+    void save(){
+        ofstream f("brain.db");
+        for(auto&p:db) f<<p.first<<"\n"<<p.second<<"\n";
+    }
+    bool answer(const string& q,string& out){
+        for(auto&p:db) if(q.find(p.first)!=string::npos){out=p.second;return true;}
+        return false;
+    }
+    void learn(const string& q,const string& a){ db[q]=a; save(); }
+};
+
+/* ========= CHAT ========= */
+class Chat{
+    MemoryAI mem;
+public:
+    void run(){
+        string q = Input::line("Kamu: ");
+        if(q.find("pembuat")!=string::npos){
+            cout<<"Bot: Aku dibuat oleh "<<CREATOR<<endl; return;
+        }
+        string a;
+        if(mem.answer(q,a)) cout<<"Bot: "<<a<<endl;
+        else{
+            cout<<"Bot: Aku belum tahu. Ajari aku.\n";
+            string j = Input::line("Jawaban: ");
+            mem.learn(q,j);
+            cout<<"Bot: Aku belajar.\n";
+        }
+        log("Chat used");
+    }
+};
+
+/* ========= KASIR ========= */
+class Kasir{
+public:
+    void run(){
+        int n=Input::get<int>("Jumlah barang: ");
+        int total=0;
+        for(int i=0;i<n;i++){
+            string nm=Input::line("Nama: ");
+            int h=Input::get<int>("Harga: ");
+            int j=Input::get<int>("Jumlah: ");
+            total+=h*j;
+        }
+        cout<<"TOTAL: Rp "<<total<<endl;
+        log("Kasir "+to_string(total));
+    }
+};
+
+/* ========= KALKULATOR ========= */
+class Calc{
+public:
+    void run(){
+        double a,b; char o;
+        cout<<"A: ";cin>>a; cout<<"Op: ";cin>>o; cout<<"B: ";cin>>b;
+        if(o=='+') cout<<a+b;
+        else if(o=='-') cout<<a-b;
+        else if(o=='*') cout<<a*b;
+        else if(o=='/'&&b!=0) cout<<a/b;
+        else cout<<"Error";
+        cout<<endl; log("Calc used");
+    }
+};
+
+/* ========= NOTES ========= */
+class Notes{
+public:
+    void run(){
+        string n = Input::line("Catatan: ");
+        ofstream f("notes.txt", ios::app);
+        f<<"- "<<n<<"\n";
+        cout<<"Disimpan.\n";
+        log("Note added");
+    }
+};
+
+/* ========= GAME ========= */
+class Game{
+public:
+    void run(){
+        srand(time(nullptr));
+        int s=rand()%50+1;
+        int g=Input::get<int>("Tebak 1-50: ");
+        cout<<(g==s?"BENAR 🔥":"SALAH 😅")<<endl;
+        log("Game played");
+    }
+};
+
+/* ========= ENGINE ========= */
+int main(){
+    cout<<"🟥 REALITY COLLAPSE ACTIVATED 🟥\n";
+    cout<<"Creator: "<<CREATOR<<"\n===============================\n";
+
+    User user; user.setup();
+    Chat chat; Kasir kasir; Calc calc; Notes notes; Game game;
+    int used=0;
+
+    while(true){
+        cout<<"\n=== REALITY MENU ===\n";
+        cout<<"User: "<<user.name<<" ("<<user.kelas<<")\n";
+        cout<<"1.Chat AI\n2.Kasir\n3.Kalkulator\n4.Notes\n5.Game\n0.Exit\nPilih: ";
+        int c; cin>>c;
+        try{
+            if(c==0) break;
+            if(c==1) chat.run();
+            else if(c==2) kasir.run();
+            else if(c==3) calc.run();
+            else if(c==4) notes.run();
+            else if(c==5) game.run();
+            else cout<<"Menu salah\n";
+            used++;
+        }catch(exception&e){
+            cout<<"Error: "<<e.what()<<endl;
+        }
+    }
+
+    cout<<"System shutdown. Total fitur dipakai: "<<used<<endl;
+    return 0;
+}
