@@ -1,50 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Code Paste</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #111;
-            color: white;
-            padding: 20px;
-        }
-        textarea {
-            width: 100%;
-            height: 350px;
-            background: #222;
-            color: #00ff00;
-            font-family: monospace;
-            font-size: 14px;
-            padding: 10px;
-        }
-        button {
-            margin-top: 10px;
-            padding: 10px 15px;
-            background: #00ff00;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
+#include <iostream>
+#include <thread>
+#include <chrono>
+#include <string>
+#include <algorithm>
+using namespace std;
 
-<h2>🧠 My Coding Paste</h2>
-<p>Tempel codingan kamu di bawah ini 👇</p>
-
-<textarea id="code"></textarea><br>
-<button onclick="simpan()">Simpan</button>
-
-<script>
-function simpan() {
-    localStorage.setItem("kodeku", document.getElementById("code").value);
-    alert("Codingan berhasil disimpan!");
+// Efek ngetik
+void ketik(const string& teks) {
+    for (char c : teks) {
+        cout << c;
+        cout.flush();
+        this_thread::sleep_for(chrono::milliseconds(30));
+    }
+    cout << endl;
 }
 
-document.getElementById("code").value =
-    localStorage.getItem("kodeku") || "";
-</script>
+// Ubah ke huruf kecil
+string kecilkan(string teks) {
+    transform(teks.begin(), teks.end(), teks.begin(), ::tolower);
+    return teks;
+}
 
-</body>
-</html>
+int main() {
+    string nama;
+    string pesan;
+
+    ketik("Haii 👋");
+    ketik("Aku chat bot sederhana (versi belajar 😄)");
+    ketik("Siapa nama kamu?");
+    cout << "Kamu : ";
+    getline(cin, nama);
+
+    ketik("Halo " + nama + "!");
+    ketik("Ngobrol aja bebas, aku coba jawab ya 😁");
+    ketik("Ketik 'bye' kalau mau keluar");
+
+    while (true) {
+        cout << "\n" << nama << " : ";
+        getline(cin, pesan);
+
+        pesan = kecilkan(pesan); // penting!
+
+        if (pesan.find("halo") != string::npos || pesan.find("hai") != string::npos) {
+            ketik("Bot : Hai juga 😄");
+        }
+        else if (pesan.find("nama") != string::npos) {
+            ketik("Bot : Aku chat bot sederhana buatan C++ 🤖");
+        }
+        else if (pesan.find("buat") != string::npos || pesan.find("pembuat") != string::npos) {
+            ketik("Bot : Aku dibuat oleh Michael Peter Nst 😎");
+        }
+        else if (pesan.find("grand") != string::npos) {
+            ketik("Bot : Hehe iya 😆 aku tau kamu suka Grand!");
+        }
+        else if (pesan.find("lagi apa") != string::npos) {
+            ketik("Bot : Lagi ngobrol sama kamu 😄");
+        }
+        else if (pesan == "bye") {
+            ketik("Bot : Okeee, sampai jumpa 👋");
+            break;
+        }
+        else {
+            ketik("Bot : Hmm aku belum terlalu pintar 😅 tapi aku belajar kok");
+        }
+    }
+
+    return 0;
+}
